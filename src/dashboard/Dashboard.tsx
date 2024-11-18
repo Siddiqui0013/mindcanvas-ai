@@ -10,7 +10,7 @@ import sec6img from "../assets/landingPage/sec6.png";
 
 import bg2 from "../assets/landingPage/section2-bg.png";
 
-import Footer from "../footer/Footer";
+// import Footer from "../footer/Footer";
 
 const HeroSection = () => {
 	return (
