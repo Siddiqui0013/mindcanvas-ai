@@ -1,3 +1,7 @@
+import TestimonialCarousel from "./Testimonials";
+import Footer from "../footer/Footer";
+import FAQ from "./FAQ";
+
 import bg from "../assets/landingPage/background pattern.png";
 import frameTop from "../assets/landingPage/Frame.png";
 import frameBottom from "../assets/landingPage/Frame (1).png";
@@ -7,10 +11,7 @@ import sec3img from "../assets/landingPage/sec3.png";
 import sec4img from "../assets/landingPage/sec4.png";
 import sec5img from "../assets/landingPage/sec5.png";
 import sec6img from "../assets/landingPage/sec6.png";
-
 import bg2 from "../assets/landingPage/section2-bg.png";
-
-// import Footer from "../footer/Footer";
 
 const HeroSection = () => {
 	return (
@@ -145,7 +146,20 @@ const HeroSection = () => {
 			<div className="Section-9"></div>
 		</header>
 
-        {/* <Footer /> */}
+		<TestimonialCarousel />
+
+		<FAQ/>
+
+		<div className="info py-16 flex flex-col items-center">
+			<h1 className="md:text-[48px] font-bold">Get Started for Free</h1>
+			<p className="md:text-[22px] md:px-40">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus alias saepe blanditiis eum quas error at, velit, exercitationem quod officia ad voluptates quae? Aliquam officiis tempora harum provident est cum?</p>
+			<div className="btns flex items-center justify-center pt-4 space-x-4">
+				<button className="bg-black text-white p-4 rounded-2xl">Learn More</button>
+				<button className="bg-[#FF7F50] text-white p-4 rounded-2xl">Sign Up for Free {' '} → </button>
+			</div>
+		</div>
+
+        <Footer />
 
         </>
 	);
