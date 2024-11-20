@@ -10,16 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@xyflow/react": "^12.3.5",
     "firebase": "^11.0.2",
-    "lucide-react": "^0.460.0",
     "nodemon": "^3.1.7",
     "openai": "^4.72.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
-    "react-router-dom": "^6.28.0",
-    "reveal.js": "^5.1.0",
-    "spectacle": "^10.1.8"
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
