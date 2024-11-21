@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Navbar from "./navbar/Navbar.tsx";
 import Login from "./auth/Login.tsx";
 import Signup from "./auth/Signup.tsx";
 import Dashboard from "./dashboard/Dashboard.tsx";
 import Test from "./testing/test.tsx";
+import Home from "./home/Home.tsx";
 
 function App() {
   return (
@@ -15,16 +15,15 @@ function App() {
 }
 
 function AppContent() {
-  const loc = useLocation();
 
   return (
     <>
-      {loc.pathname !== "/login" && loc.pathname !== "/signup" ? <Navbar /> : ""}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </>
   );

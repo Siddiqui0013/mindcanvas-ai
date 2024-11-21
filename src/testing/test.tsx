@@ -102,13 +102,14 @@ export default function Test() {
 					},
 					{
 						role: "system",
-						content: 'Whatever the prompt, you will generate presentation data with specific length constraints',
+						content: 'Whatever the prompt, you will generate presentation data with specific length constraints. if any offensive word like "po*n", "ni*ga" is used as prompt, give response with the alternative of that word in positivity with specified format',
 					},
 					{ role: "user", content: prompt },
 				],
 			});
 
 			if (completion.choices[0].message.content) {
+				console.log(completion.choices[0].message.content);
                 const parsedData = JSON.parse(completion.choices[0].message.content);
                 console.log(parsedData);
                 
@@ -116,6 +117,7 @@ export default function Test() {
               }
 		} catch (error) {
 			console.error("Error:", error);
+			alert("Error processing response. Please try again Or use Another prompt.");
 		}
 	};
 	return (

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -9,7 +9,7 @@ const nav = useNavigate()
       <div className="container mx-auto flex justify-between items-center py-4 px-4">
         <div className="text-xl font-bold">Logo</div>
         <div className="space-x-6">
-          <a href="#home" className="">Home</a>
+          <Link to="/home">Home</Link>
           <a href="#price" className="">Price</a>
           <a href="#about" className="">About Us</a>
         </div>

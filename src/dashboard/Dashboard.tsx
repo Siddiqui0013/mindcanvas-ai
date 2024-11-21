@@ -2,6 +2,8 @@ import TestimonialCarousel from "./Testimonials";
 import Footer from "../footer/Footer";
 import FAQ from "./FAQ";
 
+import Navbar from "../navbar/Navbar";
+
 import bg from "../assets/landingPage/background pattern.png";
 import frameTop from "../assets/landingPage/Frame.png";
 import frameBottom from "../assets/landingPage/Frame (1).png";
@@ -16,6 +18,7 @@ import bg2 from "../assets/landingPage/section2-bg.png";
 const HeroSection = () => {
 	return (
         <>
+		<Navbar />
 		<header className="pt-4 pb-6 bg-white">
 			<div>
 				<div
