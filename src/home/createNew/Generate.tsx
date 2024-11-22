@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
+
 type Props = {
 	setModal: (
 		state: "none" | "create" | "paste" | "generate" | "import"
@@ -30,16 +34,19 @@ const GenerateModal = ({ setModal }: Props) => {
 	const [prompt, setPrompt] = useState("");
     const [cards, setCards] = useState(4)
 
-    // const randomPrompts = () => {
-    //     const randomPrompts = [...prompts].sort(() => Math.random() - 0.5 ).slice(0, 6);
-    //     return randomPrompts;
-    // }
-
-    // const promptsArray = randomPrompts()
-
     const randomPrompts = useMemo(()=>{
         return [...prompts].sort(() => Math.random() - 0.5 ).slice(0, 6)
     },[])
+
+    const generateBtnclick = () => {
+        console.log(prompt);
+        
+        if (selectedMod === null || prompt === "") {
+            toast.error("Please select a mode (Presentation or Document).");
+        } else {
+            toast.success(`${selectedMod === "presentation" ? "Presentation" : "Document"} Generated with prompt: ${prompt}`);
+        }
+    };
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
@@ -81,7 +88,11 @@ const GenerateModal = ({ setModal }: Props) => {
 				<div className="flex gap-4 mb-4">
 					<select className="px-4 py-2 border rounded"
                     value={cards}
-                    onChange={(e) => setCards(parseInt(e.target.value))}
+                    onChange={
+                        (e) => { setCards(parseInt(e.target.value))
+                        console.log(cards);
+                        }
+                    }
                     >
 						<option value={4}>4 cards</option>
                         <option value={5}>5 cards</option>
@@ -99,7 +110,10 @@ const GenerateModal = ({ setModal }: Props) => {
 					placeholder="Describe what you'd like to make"
 				/>
 
-                <button className="w-full h-12 mb-2 bg-primary text-white rounded-lg">Generate</button>
+                <button className="w-full h-12 mb-2 bg-primary text-white rounded-lg"
+                onClick={generateBtnclick}
+                >
+                    Generate</button>
 
 				<div className="text-md text-gray-500">Example prompts</div>
 
@@ -117,6 +131,7 @@ const GenerateModal = ({ setModal }: Props) => {
 
 				</div>
 			</div>
+            <ToastContainer />
 		</div>
 	);
 };
