@@ -3,12 +3,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 import { Link } from "react-router-dom";
 
-interface Props {
-  setModal: (state : boolean) => void
-}
+type NavbarProps = {
+  setModal: (state: 'none' | 'create' | 'paste' | 'generate' | 'import') => void;
+};
 
-export default function Navbar( {setModal} : Props) {
 
+export default function Navbar({ setModal }: NavbarProps) {
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function Navbar( {setModal} : Props) {
             </select>
             <button 
             className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90"
-            onClick={() => setModal(true)}
+            onClick={() => setModal("create")}
             >
                Create new
                <span className='ml-2 bg-orange-800 rounded-md p-[3px]'>AI</span>
