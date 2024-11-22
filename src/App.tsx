@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./auth/Login.tsx";
 import Signup from "./auth/Signup.tsx";
@@ -15,6 +15,9 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/test" element={<Test />} />
         <Route path="/home" element={<Home />} />
+
+        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </Router>
   );
