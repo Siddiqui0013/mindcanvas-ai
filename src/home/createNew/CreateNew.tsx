@@ -1,7 +1,7 @@
 import { TbFileText, TbPencil, TbDownload } from 'react-icons/tb';
 
 
-export default function CreateNew() {
+export default function CreateNew( {setModal} : {setModal: (state : boolean) => void}) {
 
   return (
     <div>
@@ -11,19 +11,25 @@ export default function CreateNew() {
           <p className="text-gray-600 mb-8">How would you like to get started?</p>
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <button className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
+            <button 
+              onClick={() => setModal(false)}
+            className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
               <TbFileText className="w-12 h-12 text-orange-500 mb-4" />
               <span className="font-medium mb-2">Past in text</span>
               <span className="text-sm text-gray-500">Submit blog post, an outline or anything else</span>
             </button>
             
-            <button className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
+            <button 
+              onClick={() => setModal(false)}
+            className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
               <TbPencil className="w-12 h-12 text-orange-500 mb-4" />
               <span className="font-medium mb-2">Generate</span>
               <span className="text-sm text-gray-500">Create from a one-line prompt or an idea</span>
             </button>
             
-            <button className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
+            <button
+              onClick={() => setModal(false)}
+            className="flex flex-col items-center p-6 border rounded-lg hover:border-orange-500 text-center">
               <TbDownload className="w-12 h-12 text-orange-500 mb-4" />
               <span className="font-medium mb-2">Import file </span>
               <span className="text-sm text-gray-500">Enhance existing docs, import article </span>

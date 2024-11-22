@@ -13,12 +13,15 @@ import SideBar from './SideBar';
 
 
 const HomePage = () => {
+
+  const [modal, setModal] = useState(false)
+
     return (
         <>
-        <Navbar />
+        <Navbar setModal={setModal}/>
         <div className="section flex w-full">
         <SideBar />
-        <ProjectDashboard/>
+        <ProjectDashboard modal={modal} setModal={setModal}  />
         </div>
         </>
     )
@@ -26,9 +29,7 @@ const HomePage = () => {
 
 export default HomePage;
 
-const ProjectDashboard = () => {
-
-  const [modal, setModal] = useState(false)
+const ProjectDashboard = ({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) => {
 
     const projects = [
       { title: 'Untitled', folder: 'Private', lastViewed: '2 days ago', creator: 'User' },
@@ -42,7 +43,7 @@ const ProjectDashboard = () => {
               (
                 <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
                   <div className="relative overlay">
-                  <Create/>      
+                  <Create setModal={setModal}/>      
                   <button 
             onClick={() => setModal(false)}
             className="absolute top-4 right-4 text-lg  hover:text-gray-700"

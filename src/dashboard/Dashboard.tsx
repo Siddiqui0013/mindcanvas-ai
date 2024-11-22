@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import TestimonialCarousel from "./Testimonials";
 import Footer from "../footer/Footer";
 import FAQ from "./FAQ";
@@ -16,6 +18,7 @@ import sec6img from "../assets/landingPage/sec6.png";
 import bg2 from "../assets/landingPage/section2-bg.png";
 
 const HeroSection = () => {
+
 	return (
         <>
 		<Navbar />
@@ -59,9 +62,13 @@ const HeroSection = () => {
 					className="Section-2 h-60 bg-center bg-cover"
 				>
 					<div className="flex justify-center space-x-6 mt-8">
+
+						<Link to = "/home">
 						<button className="px-6 py-3 md:w-60 bg-gray-900 text-white rounded hover:bg-gray-800">
 							Get Started
 						</button>
+						</Link>
+						
 						<button className="px-6 py-3 md:w-60 bg-primary text-white rounded hover:bg-orange-600">
 							Request a Demo
 						</button>

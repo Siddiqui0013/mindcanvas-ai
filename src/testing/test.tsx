@@ -29,7 +29,7 @@ export default function Test() {
 		};
 	}
 
-	const apiKey = "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";
+	const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 	const [prompt, setPrompt] = useState("");
 	const [responseData, setresponseData] = useState<SlideData | null>(null);
 
@@ -68,8 +68,7 @@ export default function Test() {
     "data": [
       // 4 entries
       {
-        "icon": "font-awesome-cdn-link",
-        "iconClass": "choose from: shield-alt, chart-line, exclamation-triangle, coins",
+
         "title": "string (2-3 words)",
         "description": "string (5-10 words)"
       }
@@ -86,6 +85,7 @@ export default function Test() {
       }
     ]
   },
+  // Add more slides as needed with any format
 }`;
 
 	const sendPrompt = async () => {
