@@ -9,15 +9,6 @@ import Home from "./home/Home.tsx";
 function App() {
   return (
     <Router>
-      <AppContent />
-    </Router>
-  );
-}
-
-function AppContent() {
-
-  return (
-    <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -25,8 +16,7 @@ function AppContent() {
         <Route path="/test" element={<Test />} />
         <Route path="/home" element={<Home />} />
       </Routes>
-    </>
+    </Router>
   );
 }
-
 export default App;
