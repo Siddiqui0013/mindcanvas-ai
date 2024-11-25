@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import OpenAI from "openai";
 
 export default function Test() {
-	interface SlideData {
+
+interface SlideData {
 		slide1: { title: string; subtitle: string };
 		slide2: {
             title: string;
@@ -27,12 +30,53 @@ export default function Test() {
             title: string;
 			data: Array<{ category: string; practice: string; study: string }>;
 		};
-	}
+}
 
-	const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-	const [prompt, setPrompt] = useState("");
+	const location = useLocation();
+	const [prompt, setPrompt] = useState(location.state?.prompt || "");
+	const [cards, setCards] = useState(location.state?.cards || 5);
+
 	const [responseData, setresponseData] = useState<SlideData | null>(null);
 
+	const [loading, setLoading] = useState(false);
+	const [loadingText, setLoadingText] = useState("");
+  
+	const loadingTexts = [
+		"Analyzing your prompt...",
+		"Understanding key themes...",
+		"Extracting main concepts...",
+		"Crafting slide content...",
+		"Organizing information...",
+		"Structuring presentation flow...",
+		"Generating compelling headlines...",
+		"Creating data visualizations...",
+		"Optimizing slide layouts...",
+		"Refining content hierarchy...",
+		"Adding visual elements...",
+		"Polishing presentation style...",
+		"Ensuring data accuracy...",
+		"Finalizing transitions...",
+		"Almost ready..."
+	  ];
+
+	useEffect(() => {
+		let interval: NodeJS.Timeout;
+		if (loading) {
+		  let index = 0;
+		  interval = setInterval(() => {
+			setLoadingText(loadingTexts[index % loadingTexts.length]);
+			index++;
+		  }, 2500);
+		}
+		return () => clearInterval(interval);
+	  }, [loading]);
+
+	  useEffect(() => {
+		if (prompt) {
+		  sendPrompt();
+		}
+	  }, [location.state?.prompt]);
+	
 	const systemPrompt = `Generate presentation data with specific length constraints:
 {
   "slide1": {
@@ -88,9 +132,12 @@ export default function Test() {
   // Add more slides as needed with any format
 }`;
 
-	const sendPrompt = async () => {
-		console.log(prompt);
 
+	const sendPrompt = async () => {
+		setLoading(true);
+		console.log(prompt);
+	
+		const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 		try {
 			const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 			const completion = await openai.chat.completions.create({
@@ -119,28 +166,38 @@ export default function Test() {
 			console.error("Error:", error);
 			alert("Error processing response. Please try again Or use Another prompt.");
 		}
+		finally{
+			setLoading(false);
+		}
 	};
+
 	return (
 		<div className=" flex flex-col">
-			<div className="p-4 bg-gray-100">
-				<div className="flex gap-4 max-w-xl mx-auto">
-					<input
-						type="text"
-						value={prompt}
-						onChange={(e) => setPrompt(e.target.value)}
-						className="flex-1 p-2 border rounded"
-						placeholder="Enter presentation topic..."
-					/>
-					<button
-						onClick={sendPrompt}
-						className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-					>
-						Generate
-					</button>
-				</div>
-			</div>
 
-			{responseData && (
+
+
+{loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[50vh]">
+          <div className="w-16 h-16 border-4 border-rose-200 border-t-rose-500 rounded-full animate-spin"></div>
+          <p className="mt-4 text-lg text-zinc-700 animate-pulse">{loadingText}</p>
+        </div>
+      ) : (
+        responseData && (
+          <>
+            <Card1 title={responseData.slide1.title} description={responseData.slide1.subtitle}/>
+            <Card2 title={responseData.slide2.title} data={responseData.slide2.data} />
+            <Card3 title={responseData.slide3.title} subtitle={responseData.slide3.subtitle} data={responseData.slide3.data}/>
+            <Card4 title={responseData.slide4.title} subtitle={responseData.slide4.subtitle} data={responseData.slide4.data} />
+            <Card5 title={responseData.slide5.title} data={responseData.slide5.data} />
+          </>
+        )
+      )}
+
+
+
+
+
+			{/* {responseData && (
 				<>
 					<Card1
 					title={responseData.slide1.title}
@@ -163,9 +220,11 @@ export default function Test() {
 					<Card5 
                     title= {responseData.slide5.title}
                     data={responseData.slide5.data} />
-					{/* <Card6 data={responseData.slide6.data} /> */}
+				//	<Card6 data={responseData.slide6.data} /> 
 				</>
 			)}
+ */}
+
 		</div>
 	);
 }
@@ -360,6 +419,16 @@ const Card5 = ({ data, title }: Card2n5Dataprops) => {
 	);
 };
 
+
+
+
+
+
+
+
+
+
+
 // const Card6 = ( {data} : CardDataprops ) => {
 //     return (
 //       <div className="bg-rose-50 m-4 rounded-2xl overflow-hidden">
@@ -379,145 +448,3 @@ const Card5 = ({ data, title }: Card2n5Dataprops) => {
 //       </div>
 //     );
 // };
-
-// import { useState } from "react";
-// import OpenAI from "openai";
-
-// export default function Test() {
-//     const apiKey = "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";
-// const [prompt, setPrompt] = useState("");
-//   const [slides, setSlides] = useState<string[]>([]);
-
-//   const sendPrompt = async () => {
-//     try {
-//       const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
-
-//       const completion = await openai.chat.completions.create({
-//         model: "gpt-4",
-//         messages: [
-//           {
-//             role: "system",
-//             content: `You are a presentation generator. Create exactly 5 slides for the given topic. Return a JSON array of strings containing slide HTML. Each slide should have a different layout and content type (title+text, bullet points, table, image placeholders, etc). Use Tailwind CSS for styling.
-
-// Format your response as a JSON array like this:
-// [
-//   "<div class=\"p-8 bg-gradient-to-r from-blue-500 to-purple-600\"><h1 class=\"text-4xl font-bold text-white mb-4\">Title</h1>...</div>",
-//   "<div class=\"p-8\"><h2 class=\"text-2xl font-semibold mb-4\">Second Slide</h2><ul class=\"list-disc pl-6\">...</ul></div>"
-// ]
-
-// For images, use: <img src="/api/placeholder/600/400" alt="detailed description of what this image would show" class="...">
-// For tables, use proper HTML table elements with Tailwind styling.
-// Ensure all HTML attributes use double quotes, not single quotes.`
-//           },
-//           { role: "user", content: prompt }
-//         ],
-//       });
-
-//       const response = completion.choices[0].message.content;
-
-//       if (response) {
-//         const parsedResponse = JSON.parse(response);
-//         setSlides(parsedResponse);
-//       }
-//     } catch (error) {
-//       console.error("Error processing response:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-6xl mx-auto p-4">
-//       <div className="w-full py-3 flex items-center justify-center flex-col gap-4">
-//         <input
-//           type="text"
-//           value={prompt}
-//           onChange={(e) => setPrompt(e.target.value)}
-//           className="p-2 bg-black text-white w-full max-w-xl rounded"
-//           placeholder="Enter your presentation topic..."
-//         />
-//         <button
-//           onClick={sendPrompt}
-//           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-//         >
-//           Generate Presentation
-//         </button>
-//       </div>
-
-//       <div className="mt-8 grid gap-8">
-//         {slides.map((item, index) => (
-//           <div
-//             key={index}
-//             dangerouslySetInnerHTML={{ __html: item }}
-//             className="border rounded-xl shadow-lg overflow-hidden"
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-// import { useState } from "react";
-// import OpenAI from "openai";
-
-// export default function Test() {
-//     const apiKey = "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";
-// const [prompt, setPrompt] = useState("");
-//   const [slides, setSlides] = useState<string[]>([]);
-
-//   const sendPrompt = async () => {
-//     try {
-//       const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
-
-//       const completion = await openai.chat.completions.create({
-//         model: "gpt-4",
-//         messages: [
-//                           { role: "system", content: "You are a helpful assistant." },
-//                           { role: "system", content: "You will generate visually appealing and structured presentations or outlines from input ideas." },
-//                           { role: "system", content: `You are a presentation generator. Return only a JSON array of strings. Each string should be valid HTML with double quotes for attributes. Format: ["<div class=\"slide\">content</div>", "<div class=\"slide\">content</div>"]`},
-//                           { role: "system", content: "Each array entry should be a string representing the JSX code for the slide content. Avoid including the full component wrapper." },
-//                           { role: "user", content: prompt }
-//                         ],
-//       });
-
-//       const response = completion.choices[0].message.content;
-
-//       if (response) {
-//         const parsedResponse = JSON.parse(response);
-//         setSlides(parsedResponse);
-//         console.log(parsedResponse);
-
-//       }
-//     } catch (error) {
-//       console.error("Error processing response:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-4xl mx-auto p-4">
-//       <div className="w-full py-3 flex items-center justify-center flex-col gap-4">
-//         <input
-//           type="text"
-//           value={prompt}
-//           onChange={(e) => setPrompt(e.target.value)}
-//           className="p-2 bg-black text-white w-full max-w-xl rounded"
-//           placeholder="Describe your presentation..."
-//         />
-//         <button
-//           onClick={sendPrompt}
-//           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-//         >
-//           Generate
-//         </button>
-//       </div>
-
-//       <div className="mt-8">
-//         {slides.map((item, index) => (
-//           <div
-//             key={index}
-//             dangerouslySetInnerHTML={{ __html: item }}
-//             className="mb-8 border rounded-lg shadow-lg"
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }

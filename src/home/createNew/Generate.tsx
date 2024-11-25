@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
+import { useNavigate } from "react-router-dom";
+
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,6 +32,9 @@ const prompts: string[] = [
 ];
 
 const GenerateModal = ({ setModal }: Props) => {
+
+	const navigate = useNavigate();
+
 	const [selectedMod, setSelectedMod] = useState<string | null>(null);
 	const [prompt, setPrompt] = useState("");
     const [cards, setCards] = useState(4)
@@ -41,10 +46,17 @@ const GenerateModal = ({ setModal }: Props) => {
     const generateBtnclick = () => {
         console.log(prompt);
         
-        if (selectedMod === null || prompt === "") {
+        if (selectedMod === null && prompt === "") {
+            toast.error("Please select a mode and enter prompt.");
+        } 
+		else if (selectedMod === null && prompt !== "") {
             toast.error("Please select a mode (Presentation or Document).");
-        } else {
-            toast.success(`${selectedMod === "presentation" ? "Presentation" : "Document"} Generated with prompt: ${prompt}`);
+        }
+		else if (selectedMod !== null && prompt === "") {
+			toast.error("Please enter a prompt.");
+		} 
+		else {
+			navigate( "/test", { state: {  prompt, cards } });
         }
     };
 
