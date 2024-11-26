@@ -64,12 +64,12 @@ const HeroSection = () => {
 					<div className="flex justify-center space-x-6 mt-8">
 
 						<Link to = "/home">
-						<button className="px-6 py-3 md:w-60 bg-gray-900 text-white rounded hover:bg-gray-800">
+						<button className="px-6 py-3 md:w-60 bg-gray-900 text-white rounded-xl hover:bg-gray-800">
 							Get Started
 						</button>
 						</Link>
 						
-						<button className="px-6 py-3 md:w-60 bg-primary text-white rounded hover:bg-orange-600">
+						<button className="px-6 py-3 md:w-60 bg-primary text-white rounded-xl hover:bg-orange-600">
 							Request a Demo
 						</button>
 					</div>

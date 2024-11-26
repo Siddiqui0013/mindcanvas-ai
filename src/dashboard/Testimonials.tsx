@@ -118,9 +118,9 @@ const TestimonialCarousel = () => {
         </div>
       </div>
 
-      <div className="flex justify-center space-x-2 mt-4">
+      <div className="flex justify-center items-center space-x-2 mt-4">
       <button
-          className="bg-gray-900 p-4 text-white rounded-3xl hover:bg-[#FF7F50] transition"
+          className="bg-gray-900 font-bold text-white py-2 px-3 rounded-3xl hover:bg-[#FF7F50] transition"
           onClick={handlePrev}
           aria-label="Previous"
         >
@@ -128,7 +128,7 @@ const TestimonialCarousel = () => {
         </button>
 
         <button
-          className="bg-gray-900 text-white p-4 rounded-3xl  hover:bg-[#FF7F50] transition"
+          className="bg-gray-900 font-bold text-white py-2 px-3 rounded-3xl  hover:bg-[#FF7F50] transition"
           onClick={handleNext}
           aria-label="Next"
         >

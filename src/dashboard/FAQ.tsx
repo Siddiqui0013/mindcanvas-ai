@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Down from "../assets/landingPage/down.png"
+import Up from "../assets/landingPage/up.png"
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState <number | null> (null); 
@@ -58,7 +60,7 @@ const FAQ = () => {
             >
               <h3 className="font-semibold">{faq.question}</h3>
               <span className="text-xl">
-                {activeIndex === index ? "▲" : "▼"}
+                {activeIndex === index ? <img src={Up} alt="" /> : <img src={Down} alt="" />}
               </span>
             </div>
             {activeIndex === index && (
