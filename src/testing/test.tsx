@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import OpenAI from "openai";
@@ -33,8 +33,8 @@ interface SlideData {
 }
 
 	const location = useLocation();
-	const [prompt, setPrompt] = useState(location.state?.prompt || "");
-	const [cards, setCards] = useState(location.state?.cards || 5);
+	const prompt = location.state?.prompt || ""
+	const cards = location.state?.cards || 5
 
 	const [responseData, setresponseData] = useState<SlideData | null>(null);
 
@@ -68,14 +68,21 @@ interface SlideData {
 			index++;
 		  }, 2500);
 		}
-		return () => clearInterval(interval);
+		return () => 
+			{
+				clearInterval(interval)
+			}
 	  }, [loading]);
 
+	  const sendPromptCalled = useRef(false);
+
 	  useEffect(() => {
-		if (prompt) {
-		  sendPrompt();
+		if (prompt && !sendPromptCalled.current) {
+			sendPrompt();
+			sendPromptCalled.current = true;
 		}
-	  }, [location.state?.prompt]);
+	}, [prompt]);
+	
 	
 	const systemPrompt = `Generate presentation data with specific length constraints:
 {
@@ -159,6 +166,8 @@ interface SlideData {
 				console.log(completion.choices[0].message.content);
                 const parsedData = JSON.parse(completion.choices[0].message.content);
                 console.log(parsedData);
+				console.log(cards);
+				
                 
                 setresponseData(parsedData);
               }
@@ -174,11 +183,9 @@ interface SlideData {
 	return (
 		<div className=" flex flex-col">
 
-
-
 {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[50vh]">
-          <div className="w-16 h-16 border-4 border-rose-200 border-t-rose-500 rounded-full animate-spin"></div>
+        <div className="flex flex-col items-center justify-center min-h-[100vh]">
+          <div className="w-16 h-16 border-4 border-zinc-700 border-t-primary rounded-full animate-spin"></div>
           <p className="mt-4 text-lg text-zinc-700 animate-pulse">{loadingText}</p>
         </div>
       ) : (
@@ -192,38 +199,6 @@ interface SlideData {
           </>
         )
       )}
-
-
-
-
-
-			{/* {responseData && (
-				<>
-					<Card1
-					title={responseData.slide1.title}
-					description={responseData.slide1.subtitle}/>
-
-					<Card2 
-                    title = {responseData.slide2.title}
-                    data={responseData.slide2.data} />
-
-					<Card3 
-                    title = {responseData.slide3.title}
-                    subtitle = {responseData.slide3.subtitle}
-                    data={responseData.slide3.data}/>
-
-					<Card4 
-                    title = {responseData.slide4.title}
-                    subtitle = {responseData.slide4.subtitle}
-                    data={responseData.slide4.data} />
-
-					<Card5 
-                    title= {responseData.slide5.title}
-                    data={responseData.slide5.data} />
-				//	<Card6 data={responseData.slide6.data} /> 
-				</>
-			)}
- */}
 
 		</div>
 	);
