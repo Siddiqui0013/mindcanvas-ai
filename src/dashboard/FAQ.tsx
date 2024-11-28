@@ -36,8 +36,8 @@ const FAQ = () => {
     <div className="w-4xl flex bg-[#F7EEDD] justify-center md:flex-row flex-col items-center space-x-2 mx-auto py-12 px-4">
     
     <div className="1st p-4 md:w-1/2">
-        <h2 className="text-[48px] font-bold mb-4">Frequently asked questions</h2>
-      <p className="text-gray-600 text-[24px] mb-6">
+        <h2 className="text-[32px] md:text-[48px] font-bold md:text-start text-center mb-4">Frequently asked questions</h2>
+      <p className="text-gray-600 text-[16px] md:text-start text-center md:text-[24px] mb-6">
         Can't find the answer you are looking for? Reach out to us here.
       </p>
         </div>

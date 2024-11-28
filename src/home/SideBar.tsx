@@ -1,4 +1,5 @@
-import { BsStar } from 'react-icons/bs';
+import ai_img from "../assets/home/ai-images.png"
+
 import { 
     RiSettings4Line, RiUserLine, RiShareLine, RiPaletteLine, RiText, 
     RiLayoutLine, RiArrowDownSLine
@@ -38,7 +39,7 @@ export default function SideBar() {
             </button>
             
             <button className="flex items-center w-full p-2 text-sm rounded text-gray-700 hover:bg-primary/10">
-              <BsStar size={18} />
+              <img src={ai_img} className='w-[20px]' />
               <span className="ml-2">AI Images</span>
             </button>
             </div>

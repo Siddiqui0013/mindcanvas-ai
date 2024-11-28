@@ -1,49 +1,19 @@
-import { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-
-import OpenAI from "openai";
+import { useState, useEffect, useRef } from "react"
+import { useLocation } from "react-router-dom"
+import OpenAI from "openai"
 
 export default function Test() {
 	
-  // interface SlideData {
-	// 	slide1: { title: string; subtitle: string };
-	// 	slide2: {
-	// 		title: string;
-	// 		data: Array<{ number: number; title: string; description: string }>;
-	// 	};
-	// 	slide3: {
-	// 		title: string;
-	// 		subtitle: string;
-	// 		data: Array<{ title: string; value: string; description: string }>;
-	// 	};
-	// 	slide4: {
-	// 		title: string;
-	// 		subtitle: string;
-	// 		data: Array<{
-	// 			icon: string;
-	// 			iconClass: string;
-	// 			title: string;
-	// 			description: string;
-	// 		}>;
-	// 	};
-	// 	slide5: {
-	// 		title: string;
-	// 		data: Array<{ category: string; practice: string; study: string }>;
-	// 	};
-	// }
-
   type SlideData = {
     [key: `slide${number}`]: {
-      title: string;
-      subtitle?: string;
-      data?: any[];
-      quote?: string;
-      steps?: any[];
-      closing?: string;
+      title: string
+      subtitle?: string
+      data?: any[]
+      quote?: string
+      steps?: any[]
+      closing?: string
     };
   };
-
-
 
   const SlideRenderer: React.FC<{ slideNumber: number; slideData: any }> = ({ slideNumber, slideData }) => {
     const slideComponents = {
@@ -61,12 +31,9 @@ export default function Test() {
       12: (data: any) => <Card12 title={data.title} closing={data.closing} />
     };
   
-    const Component = slideComponents[slideNumber as keyof typeof slideComponents];
-    return Component ? Component(slideData) : null;
-  };
-
-
-
+    const Component = slideComponents[slideNumber as keyof typeof slideComponents]
+    return Component ? Component(slideData) : null
+  }
 
   const PresentationRenderer: React.FC<{loading: boolean; loadingText: string; responseData: SlideData | null;}> = ({ loading, loadingText, responseData }) => {
     if (loading) {
@@ -77,11 +44,11 @@ export default function Test() {
             {loadingText}
           </p>
         </div>
-      );
+      )
     }
   
     if (!responseData) {
-      return null;
+      return null
     }
  const slideNumbers = Object.keys(responseData)
  .filter(key => key.startsWith('slide'))
@@ -98,18 +65,17 @@ return (
      />
    ))}
  </>
-);
-};
-
+)
+}
 
 	const location = useLocation();
-	const prompt = location.state?.prompt || "";
-	const cards = location.state?.cards || 5;
+	const prompt = location.state?.prompt || ""
+	const cards = location.state?.cards || 5
 
-	const [responseData, setresponseData] = useState<SlideData | null>(null);
+	const [responseData, setresponseData] = useState<SlideData | null>(null)
 
-	const [loading, setLoading] = useState(false);
-	const [loadingText, setLoadingText] = useState("");
+	const [loading, setLoading] = useState(false)
+	const [loadingText, setLoadingText] = useState("")
 
   const loadingTexts = [
     "Initializing presentation process...",
@@ -132,88 +98,32 @@ return (
     "Finalizing color schemes...",
     "Aligning content for perfect spacing...",
     "Your presentation is almost ready!"
-];
-
+]
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
 		if (loading) {
-			let index = 0;
+			let index = 0
 			interval = setInterval(() => {
-				setLoadingText(loadingTexts[index % loadingTexts.length]);
-				index++;
-			}, 2500);
+				setLoadingText(loadingTexts[index % loadingTexts.length])
+				index++
+			}, 2500)
 		}
 		return () => {
-			clearInterval(interval);
+			clearInterval(interval)
 		};
-	}, [loading]);
+	}, [loading])
 
-	const sendPromptCalled = useRef(false);
+	const sendPromptCalled = useRef(false)
 
 	useEffect(() => {
 		if (prompt && !sendPromptCalled.current) {
-			sendPrompt();
-			sendPromptCalled.current = true;
+			sendPrompt()
+			sendPromptCalled.current = true
 		}
-	}, [prompt]);
+	}, [prompt])
 
-// const systemPrompt = `Generate presentation data with specific length constraints:
-// {
-//   "slide1": {
-//     "title": "string (4-8 words)",
-//     "subtitle": "string (20-40 words, describing main points)"
-//   },
-//   "slide2": {
-//     "title": "string (2-3 words)",
-//     "data": [
-//       // 3 entries
-//       {
-//         "number": "1-3",
-//         "title": "string (2-4 words)",
-//         "description": "string (15-25 words)"
-//       }
-//     ]
-//   },
-//   "slide3": {
-//     "title": "string (2-3 words)",
-//     "subtitle": "string (6-10 words, describing main points)",
-//     "data": [
-//       // 4 entries
-//       {
-//         "title": "string (1-2 words)",
-//         "value": "string (percentage between 80-99%)",
-//         "description": "string (2-4 words)"
-//       }
-//     ]
-//   },
-//   "slide4": {
-//     "title": "string (2-3 words)",
-//     "subtitle": "string (6-10 words, describing main points)",
-//     "data": [
-//       // 4 entries
-//       {
-
-//         "title": "string (2-3 words)",
-//         "description": "string (5-10 words)"
-//       }
-//     ]
-//   },
-//   "slide5": {
-//     "title": "string (2-3 words)",
-//     "data": [
-//       // 3 entries
-//       {
-//         "category": "string (2-3 words)",
-//         "practice": "string (10-15 words)",
-//         "study": "string (company name)"
-//       }
-//     ]
-//   },
-//   // Add more slides as needed with any format
-// }`;
-
-const systemPrompt = `Generate a presentation with a total of ${cards} slides for any of these slides format randomly, making the 1st slide the title slide as same. Use the following JSON format for each slide, ensuring the specified structure and content requirements are followed. Always include exactly {cards} slides, using the formats provided below:
+const systemPrompt = `Generate a presentation with a total of ${cards} slides. Generate any slide from one of the twelves format making the 1st slide the same and last slide conclusion (slide 8) and pick others randomly according to the need (For example to generate 5 slides, pick 4 random slides not in a sequence). Use the following JSON format for each slide, ensuring the specified structure and content requirements are followed, whether the prompt is a single word or a paragraph, you will understand the idea or feelings and you will always give repsonse in specified JSON format:
 {
   "slide1": {
     "title": "string (4-8 words)",
@@ -266,7 +176,7 @@ const systemPrompt = `Generate a presentation with a total of ${cards} slides fo
   },
   "slide6": {
     "title": "string (3-5 words)",
-    "quote": "string (inspirational quote, 10-20 words)"
+    "quote": "string (inspirational quote, 10-30 words)"
   },
   "slide7": {
     "title": "string (2-3 words)",
@@ -280,7 +190,7 @@ const systemPrompt = `Generate a presentation with a total of ${cards} slides fo
   },
   "slide8": {
     "title": "string (2-4 words)",
-    "subtitle": "string (15-25 words, summary of points)"
+    "subtitle": "string (25-35 words, summary of points)"
   },
   "slide9": {
     "title": "string (2-3 words)",
@@ -311,20 +221,14 @@ const systemPrompt = `Generate a presentation with a total of ${cards} slides fo
         "benefit": "string (10-15 words)"
       }
     ]
-  },
-  "slide12": {
-    "title": "string (2-3 words)",
-    "closing": "string (15-25 words, conclusion or call to action)"
   }
 }
 
 Make sure all slides include creative, well-formatted content, and the total number of slides matches {cards}. Add more slides in the above format if {cards} exceeds 12.
-`;
+`
 
-
-	const sendPrompt = async () => {
-		setLoading(true);
-		console.log(prompt);
+const sendPrompt = async () => {
+		setLoading(true)
 
 		const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 		try {
@@ -343,72 +247,33 @@ Make sure all slides include creative, well-formatted content, and the total num
 					},
 					{ role: "user", content: prompt },
 				],
-			});
+			})
 
 			if (completion.choices[0].message.content) {
-				console.log(completion.choices[0].message.content);
-				const parsedData = JSON.parse(completion.choices[0].message.content);
+				console.log(completion.choices[0].message.content)
+				const parsedData = JSON.parse(completion.choices[0].message.content)
 				if (parsedData && !loading) {
-					setresponseData(parsedData);
+					setresponseData(parsedData)
 				}
-				console.log(responseData);
+				console.log(responseData)
 			}
 		} catch (error) {
-			console.error("Error:", error);
+			console.error("Error:", error)
 			alert(
 				"Error processing response. Please try again Or use Another prompt."
 			);
 		} finally {
-			setLoading(false);
+			setLoading(false)
 		}
 	};
 
 	return (
 		<div className=" flex flex-col">
-			{/* {loading ? (
-
-				<div className="flex flex-col items-center justify-center min-h-[100vh]">
-					<div className="w-16 h-16 border-4 border-zinc-700 border-t-primary rounded-full animate-spin"></div>
-					<p className="mt-4 text-lg text-zinc-700 animate-pulse">
-						{loadingText}
-					</p>
-				</div>
-			) : (
-				responseData && ( */}
-
           <PresentationRenderer
           loading={loading}
           loadingText={loadingText}
           responseData={responseData}
         />
-
-					{/* // 	<>
-					// 	<Card1
-					// 		title={responseData.slide1.title}
-					// 		description={responseData.slide1.subtitle}
-					// 	/>
-					// 	<Card2
-					// 		title={responseData.slide2.title}
-					// 		data={responseData.slide2.data}
-					// 	/>
-					// 	<Card3
-					// 		title={responseData.slide3.title}
-					// 		subtitle={responseData.slide3.subtitle}
-					// 		data={responseData.slide3.data}
-					// 	/>
-					// 	<Card4
-					// 		title={responseData.slide4.title}
-					// 		subtitle={responseData.slide4.subtitle}
-					// 		data={responseData.slide4.data}
-					// 	/>
-					// 	<Card5
-					// 		title={responseData.slide5.title}
-					// 		data={responseData.slide5.data}
-					// 	/>
-					// </>
-
-				)
-			)} */}
 
 		</div>
 	);
@@ -533,7 +398,7 @@ const Card1: React.FC<Slide1> = ({ title, subtitle }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card2: React.FC<Slide2> = ({ title, data }) => {
   return (
@@ -567,7 +432,7 @@ const Card2: React.FC<Slide2> = ({ title, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card3: React.FC<Slide3> = ({ title, subtitle, data }) => {
   return (
@@ -596,7 +461,7 @@ const Card3: React.FC<Slide3> = ({ title, subtitle, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card4: React.FC<Slide4> = ({ title, subtitle, data }) => {
   return (
@@ -628,7 +493,7 @@ const Card4: React.FC<Slide4> = ({ title, subtitle, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card5: React.FC<Slide5> = ({ title, data }) => {
   return (
@@ -670,7 +535,7 @@ const Card5: React.FC<Slide5> = ({ title, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card6: React.FC<Slide6> = ({ title, quote }) => {
   return (
@@ -685,7 +550,7 @@ const Card6: React.FC<Slide6> = ({ title, quote }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card7: React.FC<Slide7> = ({ title, data }) => {
   return (
@@ -707,7 +572,7 @@ const Card7: React.FC<Slide7> = ({ title, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card8: React.FC<Slide8> = ({ title, subtitle }) => {
   return (
@@ -731,7 +596,7 @@ const Card8: React.FC<Slide8> = ({ title, subtitle }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card9: React.FC<Slide9> = ({ title, data }) => {
   return (
@@ -762,7 +627,7 @@ const Card9: React.FC<Slide9> = ({ title, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card10: React.FC<Slide10> = ({ title, steps }) => {
   return (
@@ -791,7 +656,7 @@ const Card10: React.FC<Slide10> = ({ title, steps }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card11: React.FC<Slide11> = ({ title, data }) => {
   return (
@@ -818,7 +683,7 @@ const Card11: React.FC<Slide11> = ({ title, data }) => {
       </div>
     </div>
   );
-};
+}
 
 const Card12: React.FC<Slide12> = ({ title, closing }) => {
   return (
@@ -841,7 +706,7 @@ const Card12: React.FC<Slide12> = ({ title, closing }) => {
       </div>
     </div>
   );
-};
+}
 
 
 

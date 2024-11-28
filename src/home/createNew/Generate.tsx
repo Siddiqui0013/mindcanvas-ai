@@ -97,7 +97,7 @@ const GenerateModal = ({ setModal }: Props) => {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-			<div className="w-full max-w-2xl bg-white rounded-lg p-6 relative">
+			<div className="md:w-full md:max-w-2xl w-[90%] p-4 bg-white rounded-lg md:p-6 relative">
 				<button
 					onClick={() => setModal("none")}
 					className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -146,6 +146,10 @@ const GenerateModal = ({ setModal }: Props) => {
                         <option value={6}>6 cards</option>
                         <option value={7}>7 cards</option>
                         <option value={8}>8 cards</option>
+                        <option value={9}>9 cards</option>
+                        <option value={10}>10 cards</option>
+                        <option value={11}>11 cards</option>
+                        <option value={12}>12 cards</option>
 					</select>
 				</div>
 
