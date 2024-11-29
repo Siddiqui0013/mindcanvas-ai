@@ -1,5 +1,6 @@
 // import {  useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,  } from "react-router-dom";
+// import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "./auth/Login.tsx";
 import Signup from "./auth/Signup.tsx";
 import Dashboard from "./dashboard/Dashboard.tsx";
