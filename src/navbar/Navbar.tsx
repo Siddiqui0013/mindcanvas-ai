@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../userContext";
 
 const Navbar = () => {
 
 const nav = useNavigate()
+
+const { user } = useUser();
 
   return (
     <nav className="bg-[#2C2C2C] text-white">
@@ -13,13 +16,14 @@ const nav = useNavigate()
           <a href="#about" className="">About Us</a>
         </div>
         <div className="space-x-6">
-          <button className=""
-          onClick={() => nav("/login")}
-          >Login</button>
+          {!user && 
           <button 
+          onClick={() => nav("/home")}
           className="px-4 py-2 bg-primary text-white rounded hover:bg-orange-600">
-            Try for free
+          Try for free
           </button>
+          }
+          
         </div>
       </div>
     </nav>

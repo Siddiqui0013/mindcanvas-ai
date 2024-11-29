@@ -1,15 +1,43 @@
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState,useEffect,useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useUser } from "../userContext";
 
 type NavbarProps = {
-	setModal: (
-		state: "none" | "create" | "paste" | "generate" | "import"
-	) => void;
+	setModal: ( state: "none" | "create" | "paste" | "generate" | "import" ) => void;
 }
+
 export default function Navbar({ setModal }: NavbarProps) {
+
+	const navigate = useNavigate();
+
+	const { user, setUser } = useUser();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [userModal, setuserModal] = useState(false)
+	const modalRef = useRef<HTMLDivElement>(null);
+
+	const handleClickOutside = (event: MouseEvent) => {
+		if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+		  setuserModal(false);
+		}
+	  };
+	
+	  useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	  }, [])
+
+	  const handleLogout = () => {
+		localStorage.removeItem("user");
+		localStorage.removeItem("token");
+		setUser(null);
+		navigate("/login");
+		setuserModal(false);
+	  };
+
 	const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
 	return (
 		<div className="nav border-b py-4 border-gray-200 flex justify-between items-center px-6">
 			<div>
@@ -56,7 +84,7 @@ export default function Navbar({ setModal }: NavbarProps) {
 					</div>
 
 					<div className="mt-8 hidden md:block md:mt-0 py-4 md:py-0 md:ml-auto">
-						<div className="flex items-center flex-col md:flex-row cursor-pointer space-x-3">
+						<div className="flex items-center relative flex-col md:flex-row space-x-3">
 							<button
 								className="px-4 py-2 text-sm font-medium text-white bg-[#DD6236] rounded-lg"
 								onClick={() => setModal("create")}
@@ -66,7 +94,33 @@ export default function Navbar({ setModal }: NavbarProps) {
 									AI
 								</span>
 							</button>
-							<FaUserCircle size={24} />
+
+							<div 
+            className="user flex cursor-pointer flex-row items-center gap-2 hover:bg-gray-100 p-2 rounded-lg transition-colors"
+            onClick={() => setuserModal(!userModal)}
+          >
+            <span className="font-medium">{user?.name}</span>
+            <FaUserCircle size={24} className="text-gray-600" />
+          </div>
+
+          {userModal && (
+            <div 
+              ref={modalRef}
+              className="modal absolute top-12 right-0 mt-2 w-48 rounded-lg bg-white shadow-lg border border-gray-200 py-2"
+            >
+              <div className="px-4 py-2 border-b border-gray-200">
+                <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+                <p className="text-xs text-gray-500">{user?.email}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+
 						</div>
 					</div>
 				</div>
