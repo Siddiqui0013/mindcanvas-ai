@@ -100,7 +100,7 @@ export default function Navbar({ setModal }: NavbarProps) {
             onClick={() => setuserModal(!userModal)}
           >
             <span className="font-medium">{user?.name}</span>
-            <FaUserCircle size={24} className="text-gray-600" />
+            <FaUserCircle size={20} className="text-gray-600" />
           </div>
 
           {userModal && (

@@ -15,14 +15,18 @@ const LoginForm = () => {
     const [form, setForm] = useState({ email: '', password: '' })
 
     // const localhost = 'http://localhost:5000/auth/'
-    const vercelhost = 'https://mind-canvas-backend.vercel.app/api/auth'
+    // const vercelHost = 'https://mind-canvas-backend.vercel.app/auth' 
+    const renderHost = 'https://mind-canvas-backend.onrender.com/auth' 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log("Email:", form.email , "Password:", form.password)
         try {
+
           // const response = await fetch(`${localhost}/login`, {
-          const response = await fetch(`${vercelhost}/login`, {
+          const response = await fetch(`${renderHost}/login`, {
+          // const response = await fetch(`${vercelHost}/login`, {
+          
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(form)
@@ -69,6 +73,7 @@ const LoginForm = () => {
             </label>
             <input
               type="email"
+              required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               id="email"
@@ -84,6 +89,7 @@ const LoginForm = () => {
             <input
               type="password"
               id="password"
+              required
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary p-2 focus:ring-primary"

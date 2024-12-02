@@ -10,14 +10,19 @@ const Signup = () => {
 
   const [form, setForm] = useState({ name: '', email: '', password: '' }) 
 
-      // const localhost = 'http://localhost:5000/auth/'
-      const vercelhost = 'https://mind-canvas-backend.vercel.app/api/auth'
+      // const localhost = 'http://localhost:5000/auth'
+      // const vercelhost = 'https://mind-canvas-backend.vercel.app/auth'
+      const RenderHost = 'https://mind-canvas-backend.onrender.com/auth'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log("Name:", form.name, "Email:", form.email , "Password:", form.password);
     try{
-      const response = await fetch(`${vercelhost}/register`, {
+
+      const response = await fetch(`${RenderHost}/register`, {
+      // const response = await fetch(`${localhost}/register`, {
+      // const response = await fetch(`${vercelhost}/register`, {
+      
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
@@ -55,6 +60,7 @@ const Signup = () => {
               type="text"
               id="name"
               value={form.name}
+              required
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary p-2 focus:ring-primary"
               placeholder="John Doe"
@@ -68,6 +74,7 @@ const Signup = () => {
               type="email"
               id="email"
               value={form.email}
+              required
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary p-2 focus:ring-primary"
               placeholder="Enter Your Email"
@@ -82,6 +89,7 @@ const Signup = () => {
               type="password"
               id="password"
               value={form.password}
+              required
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary p-2 focus:ring-primary"
               placeholder="••••••••"
